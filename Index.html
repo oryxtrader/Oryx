@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Oryx | Deriv Analysis Kit</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #101827;
+  color: #ffffff;
+}
+
+header {
+  background: #172033;
+  padding: 20px;
+  border-bottom: 1px solid #2d3b52;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+header p {
+  margin: 6px 0 0;
+  color: #9ca9bd;
+}
+
+.container {
+  padding: 20px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+select,
+button {
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+}
+
+select {
+  background: #1c2940;
+  color: white;
+}
+
+button {
+  background: #00b894;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.status {
+  background: #172033;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.price {
+  font-size: 32px;
+  font-weight: bold;
+  color: #00d4a7;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  background: #172033;
+  border: 1px solid #2d3b52;
+  padding: 18px;
+  border-radius: 12px;
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+.value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #00d4a7;
+}
+
+.digit-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.digit {
+  background: #1c2940;
+  padding: 10px 4px;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #78869a;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🦅 ORYX</h1>
+  <p>Deriv Market & Digit Analysis Kit</p>
+</header>
+
+<div class="container">
+
+  <div class="controls">
+    <select id="symbol">
+      <option value="R_10">Volatility 10 Index</option>
+      <option value="R_25">Volatility 25 Index</option>
+      <option value="R_50">Volatility 50 Index</option>
+      <option value="R_75">Volatility 75 Index</option>
+      <option value="R_100">Volatility 100 Index</option>
+    </select>
+
+    <button id="connectBtn">Start Analysis</button>
+  </div>
+
+  <div class="status">
+    <div>Market Status: <span id="status">Not Connected</span></div>
+    <div class="price" id="price">--</div>
+    <div>Last Digit: <strong id="lastDigit">--</strong></div>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>🎯 Matches / Differs</h3>
+      <p>Most frequent digit</p>
+      <div class="value" id="matchDigit">--</div>
+      <p>Frequency analysis of recent ticks.</p>
+    </div>
+
+    <div class="card">
+      <h3>📊 Over / Under</h3>
+      <p>Higher digit probability</p>
+      <div class="value" id="overSignal">--</div>
+      <p>Based on recent digit distribution.</p>
+    </div>
+
+    <div class="card">
+      <h3>📈 Rise / Fall</h3>
+      <p>Recent market direction</p>
+      <div class="value" id="trendSignal">--</div>
+      <p>Calculated from recent price movement.</p>
+    </div>
+
+    <div class="card">
+      <h3>⚖️ Odd / Even</h3>
+      <p>Dominant recent outcome</p>
+      <div class="value" id="oddEvenSignal">--</div>
+      <p>Based on recent tick digits.</p>
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:20px;">
+    <h3>🔢 Last Digit Frequency</h3>
+    <div class="digit-grid" id="digitGrid"></div>
+  </div>
+
+</div>
+
+<footer>
+  ORYX • Deriv Analysis Kit • Analysis only — not guaranteed trading predictions
+</footer>
+
+<script>
+
+const digitCounts = Array(10).fill(0);
+let prices = [];
+
+const digitGrid = document.getElementById("digitGrid");
+
+function renderDigits() {
+  digitGrid.innerHTML = "";
+
+  for (let i = 0; i < 10; i++) {
+    const div = document.createElement("div");
+    div.className = "digit";
+    div.innerHTML = i + "<br><strong>" + digitCounts[i] + "</strong>";
+    digitGrid.appendChild(div);
+  }
+}
+
+function updateAnalysis(price) {
+
+  const formattedPrice = Number(price).toFixed(2);
+  const digit = Number(String(formattedPrice).slice(-1));
+
+  document.getElementById("price").textContent = formattedPrice;
+  document.getElementById("lastDigit").textContent = digit;
+
+  digitCounts[digit]++;
+  prices.push(Number(price));
+
+  if (prices.length > 100) prices.shift();
+
+  const maxCount = Math.max(...digitCounts);
+  const matchDigit = digitCounts.indexOf(maxCount);
+
+  document.getElementById("matchDigit").textContent =
+    "Digit " + matchDigit;
+
+  const low = digitCounts.slice(0, 5)
+    .reduce((a, b) => a + b, 0);
+
+  const high = digitCounts.slice(5, 10)
+    .reduce((a, b) => a + b, 0);
+
+  document.getElementById("overSignal").textContent =
+    high > low ? "OVER (5-9)" : "UNDER (0-4)";
+
+  const even =
+    digitCounts[0] +
+    digitCounts[2] +
+    digitCounts[4] +
+    digitCounts[6] +
+    digitCounts[8];
+
+  const odd =
+    digitCounts[1] +
+    digitCounts[3] +
+    digitCounts[5] +
+    digitCounts[7] +
+    digitCounts[9];
+
+  document.getElementById("oddEvenSignal").textContent =
+    even > odd ? "EVEN" : "ODD";
+
+  if (prices.length > 1) {
+
+    const first = prices[0];
+    const last = prices[prices.length - 1];
+
+    document.getElementById("trendSignal").textContent =
+      last > first ? "RISE ↑" : "FALL ↓";
+  }
+
+  renderDigits();
+}
+
+document.getElementById("connectBtn").addEventListener("click", function() {
+
+  document.getElementById("status").textContent =
+    "Demo Analysis Running";
+
+  this.textContent = "Analysis Running";
+
+  /*
+    NEXT STEP:
+    We will connect this section to the Deriv WebSocket API
+    so live ticks replace the demo data.
+  */
+
+  setInterval(() => {
+
+    const demoPrice =
+      1000 + Math.random() * 50;
+
+    updateAnalysis(demoPrice);
+
+  }, 1000);
+
+});
+
+renderDigits();
+
+</script>
+
+</body>
+</html>
