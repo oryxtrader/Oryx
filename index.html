@@ -1,371 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!DOCTYPE html>  <html lang="en">  
-<head>  
-  <meta charset="UTF-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Oryx Deriv Analysis Tool</title>    <style>  
-    * {  
-      box-sizing: border-box;  
-      margin: 0;  
-      padding: 0;  
-      font-family: Arial, sans-serif;  
-    }  
-  
-    body {  
-      background: #0b0f14;  
-      color: #ffffff;  
-      min-height: 100vh;  
-      padding: 20px;  
-    }  
-  
-    .container {  
-      max-width: 1000px;  
-      margin: auto;  
-    }  
-  
-    header {  
-      text-align: center;  
-      margin-bottom: 30px;  
-    }  
-  
-    h1 {  
-      color: #00e676;  
-      margin-bottom: 10px;  
-    }  
-  
-    .subtitle {  
-      color: #a0a0a0;  
-    }  
-  
-    .panel {  
-      background: #151b23;  
-      border: 1px solid #28313c;  
-      border-radius: 12px;  
-      padding: 20px;  
-      margin-bottom: 20px;  
-    }  
-  
-    h2 {  
-      margin-bottom: 15px;  
-      color: #00e676;  
-    }  
-  
-    .controls {  
-      display: flex;  
-      gap: 10px;  
-      flex-wrap: wrap;  
-    }  
-  
-    input {  
-      flex: 1;  
-      min-width: 200px;  
-      padding: 14px;  
-      border-radius: 8px;  
-      border: 1px solid #3a4654;  
-      background: #0b0f14;  
-      color: white;  
-      font-size: 16px;  
-    }  
-  
-    button {  
-      padding: 14px 20px;  
-      border: none;  
-      border-radius: 8px;  
-      background: #00e676;  
-      color: #07110b;  
-      font-weight: bold;  
-      cursor: pointer;  
-      font-size: 16px;  
-    }  
-  
-    button:hover {  
-      background: #00c853;  
-    }  
-  
-    .digits {  
-      display: flex;  
-      flex-wrap: wrap;  
-      gap: 8px;  
-      margin-top: 15px;  
-    }  
-  
-    .digit {  
-      width: 45px;  
-      height: 45px;  
-      display: flex;  
-      align-items: center;  
-      justify-content: center;  
-      background: #222b35;  
-      border-radius: 8px;  
-      font-weight: bold;  
-      font-size: 18px;  
-    }  
-  
-    .stats {  
-      display: grid;  
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));  
-      gap: 15px;  
-      margin-top: 20px;  
-    }  
-  
-    .card {  
-      background: #202833;  
-      padding: 18px;  
-      border-radius: 10px;  
-      text-align: center;  
-    }  
-  
-    .card h3 {  
-      color: #a0a0a0;  
-      font-size: 14px;  
-      margin-bottom: 10px;  
-    }  
-  
-    .card p {  
-      color: #00e676;  
-      font-size: 24px;  
-      font-weight: bold;  
-    }  
-  
-    .analysis-grid {  
-      display: grid;  
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));  
-      gap: 15px;  
-    }  
-  
-    .analysis-card {  
-      background: #202833;  
-      padding: 20px;  
-      border-radius: 10px;  
-    }  
-  
-    .analysis-card h3 {  
-      margin-bottom: 12px;  
-      color: #ffffff;  
-    }  
-  
-    .result {  
-      font-size: 28px;  
-      color: #00e676;  
-      font-weight: bold;  
-      margin-bottom: 10px;  
-    }  
-  
-    .small {  
-      color: #a0a0a0;  
-      line-height: 1.5;  
-    }  
-  
-    footer {  
-      text-align: center;  
-      color: #666;  
-      margin-top: 30px;  
-      font-size: 13px;  
-    }  
-  </style>  </head>  <body>  <div class="container">    <header>  
-    <h1>ORYX</h1>  
-    <p class="subtitle">Deriv Digit Analysis Tool</p>  
-  </header>    <div class="panel">  
-    <h2>Enter Recent Digits</h2>  <div class="controls">  
-  <input  
-    type="text"  
-    id="digitsInput"  
-    placeholder="Example: 1,5,3,7,2,9,0,4,6"  
-  >  
+  <title>Oryx Deriv Analysis Tool</title>
 
-  <button onclick="analyzeDigits()">Analyze</button>  
-</div>  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
 
-<div class="digits" id="digitsDisplay"></div>
+    body {
+      background: #0f172a;
+      color: #ffffff;
+      min-height: 100vh;
+      padding: 20px;
+    }
 
-  </div>    <div class="panel">  
-    <h2>Quick Statistics</h2>  <div class="stats">  
+    .container {
+      max-width: 1000px;
+      margin: auto;
+    }
 
-  <div class="card">  
-    <h3>Total Digits</h3>  
-    <p id="totalDigits">0</p>  
-  </div>  
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
 
-  <div class="card">  
-    <h3>Even</h3>  
-    <p id="evenCount">0</p>  
-  </div>  
+    header h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
 
-  <div class="card">  
-    <h3>Odd</h3>  
-    <p id="oddCount">0</p>  
-  </div>  
+    header p {
+      color: #94a3b8;
+    }
 
-  <div class="card">  
-    <h3>Average</h3>  
-    <p id="average">0</p>  
-  </div>  
+    .input-card {
+      background: #1e293b;
+      padding: 25px;
+      border-radius: 15px;
+      margin-bottom: 25px;
+    }
 
-</div>
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
 
-  </div>    <div class="panel">  
-    <h2>Market Analysis</h2>  <div class="analysis-grid">  
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: white;
+      font-size: 16px;
+      resize: vertical;
+    }
 
-  <div class="analysis-card">  
-    <h3>Over / Under</h3>  
-    <div class="result" id="overUnder">Waiting...</div>  
-    <p class="small">  
-      Analysis based on whether recent digits are predominantly above or below 5.  
-    </p>  
-  </div>  
+    button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      background: #22c55e;
+      color: #062b16;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-  <div class="analysis-card">  
-    <h3>Odd / Even</h3>  
-    <div class="result" id="oddEven">Waiting...</div>  
-    <p class="small">  
-      Shows the dominant pattern from the entered digit sequence.  
-    </p>  
-  </div>  
+    button:hover {
+      opacity: 0.9;
+    }
 
-  <div class="analysis-card">  
-    <h3>Rise / Fall</h3>  
-    <div class="result" id="riseFall">Waiting...</div>  
-    <p class="small">  
-      Compares consecutive digits to identify rising or falling movement.  
-    </p>  
-  </div>  
+    .results {
+      display: none;
+    }
 
-  <div class="analysis-card">  
-    <h3>Most Frequent Digit</h3>  
-    <div class="result" id="mostFrequent">Waiting...</div>  
-    <p class="small">  
-      Identifies which digit appears most frequently in the selected data.  
-    </p>  
-  </div>  
+    .summary {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
 
-</div>
+    .summary h2 {
+      margin-bottom: 15px;
+    }
 
-  </div>    <footer>  
-    Oryx Deriv Analysis Tool • For analytical purposes only  
-  </footer>  </div>  <script>  
-  
-function analyzeDigits() {  
-  
-  const input = document.getElementById("digitsInput").value;  
-  
-  const digits = input  
-    .split(/[\s,]+/)  
-    .map(Number)  
-    .filter(d => d >= 0 && d <= 9 && Number.isInteger(d));  
-  
-  if (digits.length === 0) {  
-    alert("Please enter valid digits between 0 and 9.");  
-    return;  
-  }  
-  
-  const display = document.getElementById("digitsDisplay");  
-  display.innerHTML = "";  
-  
-  digits.forEach(digit => {  
-    const box = document.createElement("div");  
-    box.className = "digit";  
-    box.textContent = digit;  
-    display.appendChild(box);  
-  });  
-  
-  const total = digits.length;  
-  
-  const even = digits.filter(d => d % 2 === 0).length;  
-  const odd = total - even;  
-  
-  const average =  
-    digits.reduce((a, b) => a + b, 0) / total;  
-  
-  document.getElementById("totalDigits").textContent = total;  
-  document.getElementById("evenCount").textContent = even;  
-  document.getElementById("oddCount").textContent = odd;  
-  document.getElementById("average").textContent =  
-    average.toFixed(2);  
-  
-  
-  // OVER / UNDER  
-  
-  const over = digits.filter(d => d >= 5).length;  
-  const under = digits.filter(d => d < 5).length;  
-  
-  let overUnderResult = "BALANCED";  
-  
-  if (over > under) {  
-    overUnderResult = "OVER";  
-  } else if (under > over) {  
-    overUnderResult = "UNDER";  
-  }  
-  
-  document.getElementById("overUnder").textContent =  
-    overUnderResult;  
-  
-  
-  // ODD / EVEN  
-  
-  let oddEvenResult = "BALANCED";  
-  
-  if (odd > even) {  
-    oddEvenResult = "ODD";  
-  } else if (even > odd) {  
-    oddEvenResult = "EVEN";  
-  }  
-  
-  document.getElementById("oddEven").textContent =  
-    oddEvenResult;  
-  
-  
-  // RISE / FALL  
-  
-  let rise = 0;  
-  let fall = 0;  
-  
-  for (let i = 1; i < digits.length; i++) {  
-  
-    if (digits[i] > digits[i - 1]) {  
-      rise++;  
-    }  
-  
-    if (digits[i] < digits[i - 1]) {  
-      fall++;  
-    }  
-  
-  }  
-  
-  let riseFallResult = "BALANCED";  
-  
-  if (rise > fall) {  
-    riseFallResult = "RISE";  
-  } else if (fall > rise) {  
-    riseFallResult = "FALL";  
-  }  
-  
-  document.getElementById("riseFall").textContent =  
-    riseFallResult;  
-  
-  
-  // MOST FREQUENT DIGIT  
-  
-  const frequency = {};  
-  
-  digits.forEach(digit => {  
-    frequency[digit] = (frequency[digit] || 0) + 1;  
-  });  
-  
-  let mostFrequentDigit = digits[0];  
-  let highestCount = 0;  
-  
-  for (const digit in frequency) {  
-  
-    if (frequency[digit] > highestCount) {  
-      highestCount = frequency[digit];  
-      mostFrequentDigit = digit;  
-    }  
-  
-  }  
-  
-  document.getElementById("mostFrequent").textContent =  
-    mostFrequentDigit;  
-  
-}  
-  
-</script>  </body>  
-</html>
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 15px;
+      border: 1px solid #334155;
+    }
+
+    .card h3 {
+      color: #94a3b8;
+      margin-bottom: 15px;
+      font-size: 17px;
+    }
+
+    .value {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .percentage {
+      color: #22c55e;
+      font-size: 16px;
+    }
+
+    .section-title {
+      margin: 30px 0 15px;
+      font-size: 24px;
+    }
+
+    .frequency-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .frequency-item {
+      background: #1e293b;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid #334155;
+    }
+
+    .digit {
+      font-size: 22px;
+      font
