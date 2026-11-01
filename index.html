@@ -10,174 +10,364 @@
 <style>
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
   font-family: Arial, sans-serif;
 }
 
 body {
-  margin: 0;
-  padding: 20px;
-  background: #080b18;
-  color: white;
+  background: #030712;
+  color: #f8fafc;
+  min-height: 100vh;
 }
 
 .container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: auto;
+  padding: 18px;
 }
 
 header {
-  text-align: center;
-  margin-bottom: 30px;
+  padding: 22px 10px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #1e293b;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo {
+  font-size: 42px;
 }
 
 h1 {
-  color: #00ff66;
-  font-size: 38px;
-  margin-bottom: 8px;
+  font-size: 28px;
+  letter-spacing: 1px;
 }
 
 .subtitle {
-  color: #aaa;
-  font-size: 18px;
+  color: #94a3b8;
+  margin-top: 5px;
 }
 
-.panel, .summary-box, .streak-box {
-  background: #101522;
-  border: 1px solid #3a4252;
-  border-radius: 18px;
-  padding: 22px;
-  margin-bottom: 22px;
-}
-
-h2 {
-  color: #00ff66;
-  margin-top: 0;
-}
-
-textarea {
-  width: 100%;
-  min-height: 110px;
+.controls {
+  background: #0f172a;
+  border: 1px solid #1e3a4d;
+  border-radius: 16px;
   padding: 18px;
-  font-size: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+label {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: bold;
+}
+
+select,
+input,
+button {
+  min-height: 46px;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+select,
+input {
+  background: #111827;
+  border: 1px solid #334155;
   color: white;
-  background: #151923;
-  border: 1px solid #555;
-  border-radius: 15px;
+  padding: 10px;
+  width: 100%;
 }
 
 button {
-  margin-top: 15px;
-  padding: 16px 30px;
-  width: 100%;
-  font-size: 20px;
-  font-weight: bold;
-  background: #00a82d;
-  color: white;
   border: none;
-  border-radius: 12px;
+  padding: 10px 18px;
   cursor: pointer;
+  font-weight: bold;
 }
 
-.results {
-  display: none;
+.run-button {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  box-shadow: 0 0 20px rgba(34,197,94,.2);
 }
 
-.grid {
+.reset-button {
+  background: #172033;
+  color: white;
+  border: 1px solid #334155;
+}
+
+.status-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
 }
 
-.card {
-  background: #101522;
-  border-radius: 15px;
+.status-card {
+  background: #0f172a;
+  border: 1px solid #1e3a4d;
+  border-radius: 16px;
+  padding: 17px;
+  min-height: 115px;
+}
+
+.status-title {
+  color: #94a3b8;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.status-value {
+  font-size: 23px;
+  font-weight: bold;
+}
+
+.green {
+  color: #4ade80;
+}
+
+.blue {
+  color: #60a5fa;
+}
+
+.purple {
+  color: #c084fc;
+}
+
+.orange {
+  color: #fbbf24;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.7fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.panel {
+  background: #0f172a;
+  border: 1px solid #1e3a4d;
+  border-radius: 16px;
   padding: 20px;
-  text-align: center;
-  border: 1px solid #252d3b;
 }
 
-.card-title {
-  color: #aaa;
-  font-size: 16px;
+.panel h2 {
+  font-size: 20px;
+  margin-bottom: 18px;
+}
+
+.panel-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hot-cold {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.mini-card {
+  background: #080d1b;
+  border: 1px solid #243244;
+  border-radius: 13px;
+  padding: 18px;
+  text-align: center;
+}
+
+.mini-title {
+  color: #94a3b8;
+  font-size: 13px;
   margin-bottom: 10px;
 }
 
-.value {
-  color: #00ff66;
-  font-size: 28px;
+.digit-value {
+  font-size: 30px;
   font-weight: bold;
 }
 
-.percent {
-  color: #aaa;
-  margin-top: 8px;
+.hot {
+  color: #f59e0b;
 }
 
-.section-title {
-  color: #00ff66;
-  margin: 30px 0 15px;
+.cold {
+  color: #60a5fa;
 }
 
-.frequency {
+.frequency-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;
 }
 
-.freq-item {
-  background: #101522;
-  border-radius: 10px;
-  padding: 15px;
+.digit-card {
+  background: #080d1b;
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  padding: 13px 8px;
   text-align: center;
 }
 
 .digit {
   font-size: 24px;
   font-weight: bold;
+  margin-bottom: 7px;
 }
 
-.freq-count {
-  color: #00ff66;
-  margin-top: 5px;
-}
-
-.warning {
-  display: none;
-  color: #ff7777;
-  margin-top: 15px;
-}
-
-.hot {
-  color: #ffb000;
-  font-weight: bold;
-  font-size: 20px;
-}
-
-.cold {
-  color: #65b7ff;
-  font-weight: bold;
-  font-size: 20px;
-}
-
-.summary-text {
-  line-height: 1.7;
-  color: #ddd;
-  font-size: 17px;
-}
-
-.note {
-  color: #888;
+.frequency {
+  color: #4ade80;
   font-size: 13px;
-  margin-top: 12px;
 }
 
-@media (max-width: 600px) {
-  h1 {
-    font-size: 30px;
+.summary {
+  margin-top: 16px;
+}
+
+.summary-item {
+  background: #080d1b;
+  border-left: 3px solid #22c55e;
+  padding: 12px;
+  margin-bottom: 9px;
+  border-radius: 6px;
+  color: #cbd5e1;
+  line-height: 1.4;
+}
+
+.analysis-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.analysis-card {
+  background: #0f172a;
+  border: 1px solid #1e3a4d;
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.analysis-card h3 {
+  font-size: 16px;
+  margin-bottom: 14px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 7px 13px;
+  border-radius: 20px;
+  background: #102b20;
+  border: 1px solid #22c55e;
+  color: #4ade80;
+  font-weight: bold;
+}
+
+.input-panel {
+  margin-bottom: 18px;
+}
+
+.input-area {
+  width: 100%;
+  min-height: 95px;
+  resize: vertical;
+  background: #080d1b;
+  border: 1px solid #334155;
+  color: white;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 16px;
+}
+
+.history-panel {
+  margin-top: 18px;
+}
+
+.history-list {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.history-item {
+  background: #080d1b;
+  border: 1px solid #1f2937;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 8px;
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+.empty-history {
+  color: #64748b;
+  text-align: center;
+  padding: 20px;
+}
+
+.footer {
+  text-align: center;
+  color: #64748b;
+  padding: 25px 10px;
+  font-size: 13px;
+}
+
+@media (max-width: 850px) {
+  .controls {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .frequency {
+  .status-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .analysis-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 23px;
+  }
+
+  .controls {
+    grid-template-columns: 1fr;
+  }
+
+  .frequency-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .analysis-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .status-value {
+    font-size: 19px;
   }
 }
 </style>
@@ -188,395 +378,396 @@ button {
 <div class="container">
 
 <header>
-<h1>ORYX</h1>
-<div class="subtitle">Deriv Digit Analysis Tool</div>
+  <div class="brand">
+    <div class="logo">🦅</div>
+    <div>
+      <h1>ORYX</h1>
+      <p class="subtitle">Deriv Analysis Tool</p>
+    </div>
+  </div>
 </header>
 
-<div class="panel">
-<h2>Enter Recent Digits</h2>
+<div class="controls">
 
-<textarea id="digits" placeholder="Example: 3,5,9,9,4,7,2,2,8,1"></textarea>
+  <div class="control-group">
+    <label>MARKET</label>
+    <select id="market">
+      <option>Volatility 10</option>
+      <option>Volatility 25</option>
+      <option>Volatility 50</option>
+      <option>Volatility 75</option>
+      <option>Volatility 100</option>
+    </select>
+  </div>
 
-<button onclick="analyzeDigits()">ANALYZE DIGITS</button>
+  <div class="control-group">
+    <label>ANALYSIS TYPE</label>
+    <select id="analysisType">
+      <option>All Analysis</option>
+      <option>Matches</option>
+      <option>Over / Under</option>
+      <option>Rise / Fall</option>
+      <option>Odd / Even</option>
+    </select>
+  </div>
 
-<div class="warning" id="warning"></div>
+  <div class="control-group">
+    <label>DATA POINTS</label>
+    <select id="dataPoints">
+      <option value="20">20</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+    </select>
+  </div>
 
-<div class="note">
-Analysis is descriptive and does not guarantee future outcomes.
-</div>
-</div>
-
-<div class="results" id="results">
-
-<h2 class="section-title">Quick Statistics</h2>
-
-<div class="grid">
-
-<div class="card">
-<div class="card-title">Total Digits</div>
-<div class="value" id="total">0</div>
-</div>
-
-<div class="card">
-<div class="card-title">Average</div>
-<div class="value" id="average">0</div>
-</div>
-
-<div class="card">
-<div class="card-title">Highest</div>
-<div class="value" id="highest">0</div>
-</div>
-
-<div class="card">
-<div class="card-title">Lowest</div>
-<div class="value" id="lowest">0</div>
-</div>
+  <div class="control-group">
+    <label>ACTION</label>
+    <button class="run-button" onclick="runAnalysis()">▶ RUN ANALYSIS</button>
+  </div>
 
 </div>
 
-<h2 class="section-title">Odd / Even</h2>
-
-<div class="grid">
-
-<div class="card">
-<div class="card-title">Odd</div>
-<div class="value" id="odd">0</div>
-<div class="percent" id="oddPct">0%</div>
+<div class="panel input-panel">
+  <h2>Enter Recent Digits</h2>
+  <textarea
+    id="digitInput"
+    class="input-area"
+    placeholder="Enter recent last digits separated by commas or spaces. Example: 9, 2, 7, 9, 1, 8, 3, 9, 4, 7"></textarea>
 </div>
 
-<div class="card">
-<div class="card-title">Even</div>
-<div class="value" id="even">0</div>
-<div class="percent" id="evenPct">0%</div>
-</div>
+<div class="status-grid">
 
-</div>
+  <div class="status-card">
+    <div class="status-title">📊 MARKET STATUS</div>
+    <div class="status-value green" id="marketStatus">READY</div>
+  </div>
 
-<h2 class="section-title">Matches / Differs</h2>
+  <div class="status-card">
+    <div class="status-title">🎯 CURRENT SIGNAL</div>
+    <div class="status-value green" id="currentSignal">WAITING</div>
+  </div>
 
-<div class="grid">
+  <div class="status-card">
+    <div class="status-title">📈 DIRECTION</div>
+    <div class="status-value blue" id="direction">—</div>
+  </div>
 
-<div class="card">
-<div class="card-title">Matches</div>
-<div class="value" id="matches">0</div>
-<div class="percent" id="matchesPct">0%</div>
-</div>
-
-<div class="card">
-<div class="card-title">Differs</div>
-<div class="value" id="differs">0</div>
-<div class="percent" id="differsPct">0%</div>
-</div>
+  <div class="status-card">
+    <div class="status-title">🔁 STREAK</div>
+    <div class="status-value purple" id="streak">—</div>
+  </div>
 
 </div>
 
-<h2 class="section-title">Rise / Fall</h2>
+<div class="main-grid">
 
-<div class="grid">
+  <div>
 
-<div class="card">
-<div class="card-title">Rise</div>
-<div class="value" id="rises">0</div>
-<div class="percent" id="risesPct">0%</div>
-</div>
+    <div class="panel">
+      <div class="panel-title">
+        <h2>🔥❄️ Hot & Cold Digits</h2>
+      </div>
 
-<div class="card">
-<div class="card-title">Fall</div>
-<div class="value" id="falls">0</div>
-<div class="percent" id="fallsPct">0%</div>
-</div>
+      <div class="hot-cold">
 
-</div>
+        <div class="mini-card">
+          <div class="mini-title">🔥 HOT DIGIT(S)</div>
+          <div class="digit-value hot" id="hotDigits">—</div>
+        </div>
 
-<h2 class="section-title">Over / Under</h2>
+        <div class="mini-card">
+          <div class="mini-title">❄️ COLD DIGIT(S)</div>
+          <div class="digit-value cold" id="coldDigits">—</div>
+        </div>
 
-<div class="grid">
+      </div>
+    </div>
 
-<div class="card">
-<div class="card-title">Over 4</div>
-<div class="value" id="over">0</div>
-<div class="percent" id="overPct">0%</div>
-</div>
+    <div class="panel summary">
+      <h2>📋 Analysis Summary</h2>
+      <div id="summaryContent">
+        <div class="summary-item">
+          Enter recent digits and run analysis to generate a summary.
+        </div>
+      </div>
+    </div>
 
-<div class="card">
-<div class="card-title">Under 5</div>
-<div class="value" id="under">0</div>
-<div class="percent" id="underPct">0%</div>
-</div>
+  </div>
 
-</div>
+  <div class="panel">
+    <div class="panel-title">
+      <h2>📊 Digit Frequency</h2>
+      <span id="sampleSize" class="badge">0 points</span>
+    </div>
 
-<h2 class="section-title">Hot / Cold Digits</h2>
-
-<div class="grid">
-
-<div class="card">
-<div class="card-title">🔥 Hot Digit(s)</div>
-<div class="hot" id="hotDigits">-</div>
-</div>
-
-<div class="card">
-<div class="card-title">❄️ Cold Digit(s)</div>
-<div class="cold" id="coldDigits">-</div>
-</div>
+    <div class="frequency-grid" id="frequencyGrid"></div>
+  </div>
 
 </div>
 
-<h2 class="section-title">Digit Frequency</h2>
+<div class="analysis-cards">
 
-<div class="frequency" id="frequency"></div>
+  <div class="analysis-card">
+    <h3>🎯 Matches</h3>
+    <div id="matchesText">Waiting for data</div>
+  </div>
 
-<h2 class="section-title">Pattern Summary</h2>
+  <div class="analysis-card">
+    <h3>↕️ Over / Under</h3>
+    <div id="overUnderText">Waiting for data</div>
+  </div>
 
-<div class="summary-box">
-<div class="summary-text" id="patternSummary">
-Enter digits and run analysis.
+  <div class="analysis-card">
+    <h3>📈 Rise / Fall</h3>
+    <div id="riseFallText">Waiting for data</div>
+  </div>
+
+  <div class="analysis-card">
+    <h3>🔢 Odd / Even</h3>
+    <div id="oddEvenText">Waiting for data</div>
+  </div>
+
 </div>
+
+<div class="panel history-panel">
+  <div class="panel-title">
+    <h2>🕘 Analysis History</h2>
+    <button class="reset-button" onclick="clearHistory()">Clear History</button>
+  </div>
+
+  <div class="history-list" id="historyList">
+    <div class="empty-history">No analysis history yet.</div>
+  </div>
 </div>
 
-<h2 class="section-title">Recent Streak</h2>
-
-<div class="streak-box">
-<strong>Last Digit:</strong> <span id="lastDigit">-</span><br>
-<strong>Current Odd/Even Streak:</strong> <span id="oeStreak">-</span><br>
-<strong>Current Direction:</strong> <span id="direction">-</span>
-</div>
-
+<div class="footer">
+  ORYX Deriv Analysis Tool • Statistical Pattern Dashboard
 </div>
 
 </div>
 
 <script>
 
-function percent(value, total) {
-  if (total <= 0) return "0.0%";
-  return ((value / total) * 100).toFixed(1) + "%";
+let historyData = [];
+
+function createFrequencyGrid() {
+  const grid = document.getElementById("frequencyGrid");
+  grid.innerHTML = "";
+
+  for (let i = 0; i <= 9; i++) {
+    grid.innerHTML += `
+      <div class="digit-card">
+        <div class="digit">${i}</div>
+        <div class="frequency" id="freq${i}">0 (0.0%)</div>
+      </div>
+    `;
+  }
 }
 
-function analyzeDigits() {
+function parseDigits() {
+  const input = document.getElementById("digitInput").value;
 
-  var input = document.getElementById("digits").value.trim();
-  var warning = document.getElementById("warning");
+  const matches = input.match(/\d/g) || [];
 
-  warning.style.display = "none";
+  return matches
+    .map(Number)
+    .filter(n => n >= 0 && n <= 9);
+}
 
-  var parts = input.split(/[\s,]+/);
-  var digits = [];
+function runAnalysis() {
 
-  for (var i = 0; i < parts.length; i++) {
+  const digits = parseDigits();
+  const market = document.getElementById("market").value;
 
-    if (parts[i] !== "") {
+  if (digits.length < 2) {
+    document.getElementById("marketStatus").textContent =
+      "NEED DATA";
 
-      var number = Number(parts[i]);
+    document.getElementById("currentSignal").textContent =
+      "ENTER 2+ DIGITS";
 
-      if (!Number.isInteger(number) || number < 0 || number > 9) {
-        warning.innerText = "Please enter valid whole digits from 0 to 9 only.";
-        warning.style.display = "block";
-        return;
-      }
-
-      digits.push(number);
-    }
-  }
-
-  if (digits.length === 0) {
-    warning.innerText = "Please enter some digits.";
-    warning.style.display = "block";
     return;
   }
 
-  var total = digits.length;
-  var sum = 0;
-  var odd = 0;
-  var even = 0;
-  var over = 0;
-  var under = 0;
-  var freq = [];
+  document.getElementById("marketStatus").textContent =
+    "ANALYSED";
 
-  for (var f = 0; f <= 9; f++) {
-    freq[f] = 0;
+  const counts = Array(10).fill(0);
+
+  digits.forEach(digit => {
+    counts[digit]++;
+  });
+
+  const total = digits.length;
+
+  for (let i = 0; i <= 9; i++) {
+    const percentage = ((counts[i] / total) * 100).toFixed(1);
+
+    document.getElementById(`freq${i}`).textContent =
+      `${counts[i]} (${percentage}%)`;
   }
 
-  for (var j = 0; j < digits.length; j++) {
+  document.getElementById("sampleSize").textContent =
+    `${total} points`;
 
-    var digit = digits[j];
+  const maxCount = Math.max(...counts);
+  const minCount = Math.min(...counts);
 
-    sum += digit;
-    freq[digit]++;
+  const hot = counts
+    .map((count, digit) => count === maxCount ? digit : null)
+    .filter(digit => digit !== null);
 
-    if (digit % 2 === 0) {
-      even++;
-    } else {
-      odd++;
-    }
+  const cold = counts
+    .map((count, digit) => count === minCount ? digit : null)
+    .filter(digit => digit !== null);
 
-    if (digit > 4) {
-      over++;
-    } else {
-      under++;
-    }
-  }
+  document.getElementById("hotDigits").textContent =
+    hot.join(", ");
 
-  var matches = 0;
-  var differs = 0;
-  var rises = 0;
-  var falls = 0;
+  document.getElementById("coldDigits").textContent =
+    cold.join(", ");
 
-  for (var k = 1; k < digits.length; k++) {
+  const oddCount = digits.filter(d => d % 2 !== 0).length;
+  const evenCount = total - oddCount;
 
-    if (digits[k] === digits[k - 1]) {
-      matches++;
-    } else {
-      differs++;
-    }
+  const oddPercent = ((oddCount / total) * 100).toFixed(1);
+  const evenPercent = ((evenCount / total) * 100).toFixed(1);
 
-    if (digits[k] > digits[k - 1]) {
+  const oddEvenResult =
+    oddCount > evenCount
+      ? `ODD dominant (${oddPercent}%)`
+      : evenCount > oddCount
+      ? `EVEN dominant (${evenPercent}%)`
+      : "BALANCED";
+
+  document.getElementById("oddEvenText").innerHTML =
+    `<span class="badge">${oddEvenResult}</span>`;
+
+  const overCount = digits.filter(d => d >= 5).length;
+  const underCount = total - overCount;
+
+  const overUnderResult =
+    overCount > underCount
+      ? `OVER dominant (${overCount})`
+      : underCount > overCount
+      ? `UNDER dominant (${underCount})`
+      : "BALANCED";
+
+  document.getElementById("overUnderText").innerHTML =
+    `<span class="badge">${overUnderResult}</span>`;
+
+  let rises = 0;
+  let falls = 0;
+  let matches = 0;
+
+  for (let i = 1; i < digits.length; i++) {
+    if (digits[i] > digits[i - 1]) {
       rises++;
-    } else if (digits[k] < digits[k - 1]) {
+    } else if (digits[i] < digits[i - 1]) {
       falls++;
+    } else {
+      matches++;
     }
   }
 
-  var comparisons = total - 1;
+  const direction =
+    rises > falls
+      ? "RISE ↑"
+      : falls > rises
+      ? "FALL ↓"
+      : "NEUTRAL";
 
-  document.getElementById("total").innerText = total;
-  document.getElementById("average").innerText = (sum / total).toFixed(2);
-  document.getElementById("highest").innerText = Math.max.apply(null, digits);
-  document.getElementById("lowest").innerText = Math.min.apply(null, digits);
+  document.getElementById("direction").textContent =
+    direction;
 
-  document.getElementById("odd").innerText = odd;
-  document.getElementById("even").innerText = even;
-  document.getElementById("oddPct").innerText = percent(odd, total);
-  document.getElementById("evenPct").innerText = percent(even, total);
+  document.getElementById("riseFallText").innerHTML =
+    `<span class="badge">${direction}</span>`;
 
-  document.getElementById("matches").innerText = matches;
-  document.getElementById("differs").innerText = differs;
-  document.getElementById("matchesPct").innerText = percent(matches, comparisons);
-  document.getElementById("differsPct").innerText = percent(differs, comparisons);
+  document.getElementById("matchesText").innerHTML =
+    `<span class="badge">${matches} MATCHES</span>`;
 
-  document.getElementById("rises").innerText = rises;
-  document.getElementById("falls").innerText = falls;
-  document.getElementById("risesPct").innerText = percent(rises, comparisons);
-  document.getElementById("fallsPct").innerText = percent(falls, comparisons);
+  const last = digits[digits.length - 1];
+  const previous = digits[digits.length - 2];
 
-  document.getElementById("over").innerText = over;
-  document.getElementById("under").innerText = under;
-  document.getElementById("overPct").innerText = percent(over, total);
-  document.getElementById("underPct").innerText = percent(under, total);
+  let streak = 1;
 
-  var maxFreq = Math.max.apply(null, freq);
-  var minFreq = Math.min.apply(null, freq.filter(function(x) {
-    return x > 0;
-  }));
-
-  var hotDigits = [];
-  var coldDigits = [];
-
-  for (var d = 0; d <= 9; d++) {
-
-    if (freq[d] === maxFreq) {
-      hotDigits.push(d);
-    }
-
-    if (freq[d] === minFreq && freq[d] > 0) {
-      coldDigits.push(d);
-    }
-  }
-
-  document.getElementById("hotDigits").innerText = hotDigits.join(", ");
-  document.getElementById("coldDigits").innerText = coldDigits.join(", ");
-
-  var frequencyHTML = "";
-
-  for (var x = 0; x <= 9; x++) {
-
-    frequencyHTML +=
-      '<div class="freq-item">' +
-      '<div class="digit">' + x + '</div>' +
-      '<div class="freq-count">' + freq[x] +
-      ' (' + percent(freq[x], total) + ')</div>' +
-      '</div>';
-  }
-
-  document.getElementById("frequency").innerHTML = frequencyHTML;
-
-  var oddEvenDominance;
-
-  if (odd > even) {
-    oddEvenDominance = "Odd digits are dominant";
-  } else if (even > odd) {
-    oddEvenDominance = "Even digits are dominant";
-  } else {
-    oddEvenDominance = "Odd and Even digits are balanced";
-  }
-
-  var movementDominance;
-
-  if (rises > falls) {
-    movementDominance = "more rises than falls";
-  } else if (falls > rises) {
-    movementDominance = "more falls than rises";
-  } else {
-    movementDominance = "balanced rises and falls";
-  }
-
-  var matchDominance;
-
-  if (matches > 0 && matches >= differs) {
-    matchDominance = "repeated consecutive digits are relatively frequent";
-  } else {
-    matchDominance = "consecutive digits mostly differ";
-  }
-
-  var hotText = hotDigits.join(", ");
-
-  document.getElementById("patternSummary").innerText =
-    oddEvenDominance + ". The recent sequence shows " +
-    movementDominance + ". " +
-    matchDominance + ". " +
-    "The most frequent observed digit(s): " + hotText + ".";
-
-  var last = digits[digits.length - 1];
-
-  document.getElementById("lastDigit").innerText = last;
-
-  var type = last % 2 === 0 ? "Even" : "Odd";
-  var streak = 1;
-
-  for (var s = digits.length - 2; s >= 0; s--) {
-
-    var previousType = digits[s] % 2 === 0 ? "Even" : "Odd";
-
-    if (previousType === type) {
+  for (let i = digits.length - 2; i >= 0; i--) {
+    if (digits[i] === last) {
       streak++;
     } else {
       break;
     }
   }
 
-  document.getElementById("oeStreak").innerText =
-    type + " × " + streak;
+  document.getElementById("streak").textContent =
+    `${last} × ${streak}`;
 
-  if (digits.length < 2) {
+  let signal = "MIXED";
 
-    document.getElementById("direction").innerText =
-      "Need at least 2 digits";
-
-  } else if (last > digits[digits.length - 2]) {
-
-    document.getElementById("direction").innerText = "Rise";
-
-  } else if (last < digits[digits.length - 2]) {
-
-    document.getElementById("direction").innerText = "Fall";
-
-  } else {
-
-    document.getElementById("direction").innerText = "Match";
+  if (oddCount > evenCount) {
+    signal = "ODD";
+  } else if (evenCount > oddCount) {
+    signal = "EVEN";
   }
 
-  document.getElementById("results").style.display = "block";
+  document.getElementById("currentSignal").textContent =
+    signal;
+
+  const hotText = hot.join(", ");
+  const coldText = cold.join(", ");
+
+  document.getElementById("summaryContent").innerHTML = `
+    <div class="summary-item">
+      ✓ ${oddEvenResult}.
+    </div>
+    <div class="summary-item">
+      ✓ ${overUnderResult}.
+    </div>
+    <div class="summary-item">
+      ✓ Direction pattern: ${direction}.
+    </div>
+    <div class="summary-item">
+      ✓ Hot digit(s): ${hotText}.
+    </div>
+    <div class="summary-item">
+      ✓ Cold digit(s): ${coldText}.
+    </div>
+  `;
+
+  addHistory({
+    market,
+    total,
+    signal,
+    direction,
+    time: new Date().toLocaleTimeString()
+  });
 }
+
+function addHistory(item) {
+
+  historyData.unshift(item);
+
+  const list = document.getElementById("historyList");
+
+  list.innerHTML = historyData.map(entry => `
+    <div class="history-item">
+      <strong>${entry.market}</strong> •
+      ${entry.total} data points •
+      Signal: <strong>${entry.signal}</strong> •
+      ${entry.direction} •
+      ${entry.time}
+    </div>
+  `).join("");
+}
+
+function clearHistory() {
+  historyData = [];
+
+  document.getElementById("historyList").innerHTML =
+    `<div class="empty-history">No analysis history yet.</div>`;
+}
+
+createFrequencyGrid();
 
 </script>
 
