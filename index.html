@@ -1,151 +1,491 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Oryx Deriv Analysis Tool</title>
+<title>ORYX Deriv Analysis Tool</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  background: #080b18;
+  color: white;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h1 {
+  color: #00ff66;
+  font-size: 38px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #aaa;
+  font-size: 18px;
+}
+
+.panel {
+  background: #101522;
+  border: 1px solid #3a4252;
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 25px;
+}
+
+h2 {
+  color: #00ff66;
+  margin-top: 0;
+}
+
+textarea {
+  width: 100%;
+  min-height: 110px;
+  padding: 18px;
+  font-size: 20px;
+  color: white;
+  background: #151923;
+  border: 1px solid #555;
+  border-radius: 15px;
+}
+
+button {
+  margin-top: 15px;
+  padding: 16px 30px;
+  font-size: 20px;
+  font-weight: bold;
+  background: #00a82d;
+  color: white;
+  border: none;
+  border-radius: 12px;
+}
+
+button:active {
+  opacity: 0.8;
+}
+
+.results {
+  display: none;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  background: #101522;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #252d3b;
+}
+
+.card-title {
+  color: #aaa;
+  font-size: 17px;
+  margin-bottom: 12px;
+}
+
+.value {
+  color: #00ff66;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.percent {
+  color: #aaa;
+  margin-top: 8px;
+}
+
+.section-title {
+  color: #00ff66;
+  margin: 30px 0 15px;
+}
+
+.frequency {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.freq-item {
+  background: #101522;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+}
+
+.digit {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.freq-count {
+  color: #00ff66;
+  margin-top: 5px;
+}
+
+.warning {
+  display: none;
+  color: #ff7777;
+  margin-top: 15px;
+}
+
+.streak-box {
+  background: #101522;
+  border-radius: 15px;
+  padding: 20px;
+  line-height: 1.8;
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 30px;
+  }
+
+  .frequency {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+<h1>ORYX</h1>
+<div class="subtitle">Deriv Digit Analysis Tool</div>
+</header>
+
+<div class="panel">
+<h2>Enter Recent Digits</h2>
+
+<textarea id="digits" placeholder="Example: 3,5,9,9,4,7,2,2,8,1"></textarea>
+
+<button onclick="analyzeDigits()">Analyze</button>
+
+<div class="warning" id="warning"></div>
+</div>
+
+<div class="results" id="results">
+
+<h2 class="section-title">Quick Statistics</h2>
+
+<div class="grid">
+
+<div class="card">
+<div class="card-title">Total Digits</div>
+<div class="value" id="total">0</div>
+</div>
+
+<div class="card">
+<div class="card-title">Average</div>
+<div class="value" id="average">0</div>
+</div>
+
+<div class="card">
+<div class="card-title">Highest</div>
+<div class="value" id="highest">0</div>
+</div>
+
+<div class="card">
+<div class="card-title">Lowest</div>
+<div class="value" id="lowest">0</div>
+</div>
+
+</div>
+
+
+<h2 class="section-title">Odd / Even</h2>
+
+<div class="grid">
+
+<div class="card">
+<div class="card-title">Odd</div>
+<div class="value" id="odd">0</div>
+<div class="percent" id="oddPct">0%</div>
+</div>
+
+<div class="card">
+<div class="card-title">Even</div>
+<div class="value" id="even">0</div>
+<div class="percent" id="evenPct">0%</div>
+</div>
+
+</div>
+
+
+<h2 class="section-title">Matches / Differs</h2>
+
+<div class="grid">
+
+<div class="card">
+<div class="card-title">Matches</div>
+<div class="value" id="matches">0</div>
+<div class="percent" id="matchesPct">0%</div>
+</div>
+
+<div class="card">
+<div class="card-title">Differs</div>
+<div class="value" id="differs">0</div>
+<div class="percent" id="differsPct">0%</div>
+</div>
+
+</div>
+
+
+<h2 class="section-title">Rise / Fall</h2>
+
+<div class="grid">
+
+<div class="card">
+<div class="card-title">Rise</div>
+<div class="value" id="rises">0</div>
+<div class="percent" id="risesPct">0%</div>
+</div>
+
+<div class="card">
+<div class="card-title">Fall</div>
+<div class="value" id="falls">0</div>
+<div class="percent" id="fallsPct">0%</div>
+</div>
+
+</div>
+
+
+<h2 class="section-title">Over / Under</h2>
+
+<div class="grid">
+
+<div class="card">
+<div class="card-title">Over 4</div>
+<div class="value" id="over">0</div>
+<div class="percent" id="overPct">0%</div>
+</div>
+
+<div class="card">
+<div class="card-title">Under 5</div>
+<div class="value" id="under">0</div>
+<div class="percent" id="underPct">0%</div>
+</div>
+
+</div>
+
+
+<h2 class="section-title">Digit Frequency</h2>
+
+<div class="frequency" id="frequency"></div>
+
+
+<h2 class="section-title">Recent Streak</h2>
+
+<div class="streak-box">
+<strong>Last Digit:</strong> <span id="lastDigit">-</span><br>
+<strong>Current Odd/Even Streak:</strong> <span id="oeStreak">-</span><br>
+<strong>Current Direction:</strong> <span id="direction">-</span>
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+function percent(value, total) {
+  if (total === 0) return "0%";
+  return ((value / total) * 100).toFixed(1) + "%";
+}
+
+function analyzeDigits() {
+
+  var input = document.getElementById("digits").value.trim();
+  var warning = document.getElementById("warning");
+
+  warning.style.display = "none";
+
+  var parts = input.split(/[\s,]+/);
+  var digits = [];
+
+  for (var i = 0; i < parts.length; i++) {
+
+    if (parts[i] !== "") {
+
+      var number = Number(parts[i]);
+
+      if (!Number.isInteger(number) || number < 0 || number > 9) {
+        warning.innerText = "Please enter valid digits from 0 to 9 only.";
+        warning.style.display = "block";
+        return;
+      }
+
+      digits.push(number);
+    }
+  }
+
+  if (digits.length === 0) {
+    warning.innerText = "Please enter some digits.";
+    warning.style.display = "block";
+    return;
+  }
+
+  var total = digits.length;
+  var sum = 0;
+  var odd = 0;
+  var even = 0;
+  var over = 0;
+  var under = 0;
+
+  for (var j = 0; j < digits.length; j++) {
+
+    sum += digits[j];
+
+    if (digits[j] % 2 === 0) {
+      even++;
+    } else {
+      odd++;
     }
 
-    body {
-      background: #0f172a;
-      color: #ffffff;
-      min-height: 100vh;
-      padding: 20px;
+    if (digits[j] > 4) {
+      over++;
+    } else {
+      under++;
+    }
+  }
+
+  var matches = 0;
+  var differs = 0;
+  var rises = 0;
+  var falls = 0;
+
+  for (var k = 1; k < digits.length; k++) {
+
+    if (digits[k] === digits[k - 1]) {
+      matches++;
+    } else {
+      differs++;
     }
 
-    .container {
-      max-width: 1000px;
-      margin: auto;
+    if (digits[k] > digits[k - 1]) {
+      rises++;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 30px;
+    if (digits[k] < digits[k - 1]) {
+      falls++;
+    }
+  }
+
+  var comparisons = total - 1;
+
+  document.getElementById("total").innerText = total;
+  document.getElementById("average").innerText = (sum / total).toFixed(2);
+  document.getElementById("highest").innerText = Math.max.apply(null, digits);
+  document.getElementById("lowest").innerText = Math.min.apply(null, digits);
+
+  document.getElementById("odd").innerText = odd;
+  document.getElementById("even").innerText = even;
+  document.getElementById("oddPct").innerText = percent(odd, total);
+  document.getElementById("evenPct").innerText = percent(even, total);
+
+  document.getElementById("matches").innerText = matches;
+  document.getElementById("differs").innerText = differs;
+  document.getElementById("matchesPct").innerText = percent(matches, comparisons);
+  document.getElementById("differsPct").innerText = percent(differs, comparisons);
+
+  document.getElementById("rises").innerText = rises;
+  document.getElementById("falls").innerText = falls;
+  document.getElementById("risesPct").innerText = percent(rises, comparisons);
+  document.getElementById("fallsPct").innerText = percent(falls, comparisons);
+
+  document.getElementById("over").innerText = over;
+  document.getElementById("under").innerText = under;
+  document.getElementById("overPct").innerText = percent(over, total);
+  document.getElementById("underPct").innerText = percent(under, total);
+
+  var frequencyHTML = "";
+
+  for (var d = 0; d <= 9; d++) {
+
+    var count = 0;
+
+    for (var n = 0; n < digits.length; n++) {
+      if (digits[n] === d) {
+        count++;
+      }
     }
 
-    header h1 {
-      font-size: 32px;
-      margin-bottom: 10px;
-    }
+    frequencyHTML +=
+      '<div class="freq-item">' +
+      '<div class="digit">' + d + '</div>' +
+      '<div class="freq-count">' + count + '</div>' +
+      '</div>';
+  }
 
-    header p {
-      color: #94a3b8;
-    }
+  document.getElementById("frequency").innerHTML = frequencyHTML;
 
-    .input-card {
-      background: #1e293b;
-      padding: 25px;
-      border-radius: 15px;
-      margin-bottom: 25px;
-    }
+  var last = digits[digits.length - 1];
 
-    label {
-      display: block;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
+  document.getElementById("lastDigit").innerText = last;
 
-    textarea {
-      width: 100%;
-      min-height: 120px;
-      padding: 15px;
-      border-radius: 10px;
-      border: 1px solid #475569;
-      background: #0f172a;
-      color: white;
-      font-size: 16px;
-      resize: vertical;
-    }
+  var type = last % 2 === 0 ? "Even" : "Odd";
+  var streak = 1;
 
-    button {
-      margin-top: 15px;
-      width: 100%;
-      padding: 15px;
-      border: none;
-      border-radius: 10px;
-      background: #22c55e;
-      color: #062b16;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+  for (var s = digits.length - 2; s >= 0; s--) {
 
-    button:hover {
-      opacity: 0.9;
-    }
+    var previousType = digits[s] % 2 === 0 ? "Even" : "Odd";
 
-    .results {
-      display: none;
+    if (previousType === type) {
+      streak++;
+    } else {
+      break;
     }
+  }
 
-    .summary {
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 15px;
-      margin-bottom: 20px;
-    }
+  document.getElementById("oeStreak").innerText =
+    type + " × " + streak;
 
-    .summary h2 {
-      margin-bottom: 15px;
-    }
+  if (digits.length < 2) {
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 15px;
-    }
+    document.getElementById("direction").innerText =
+      "Need at least 2 digits";
 
-    .card {
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 15px;
-      border: 1px solid #334155;
-    }
+  } else if (last > digits[digits.length - 2]) {
 
-    .card h3 {
-      color: #94a3b8;
-      margin-bottom: 15px;
-      font-size: 17px;
-    }
+    document.getElementById("direction").innerText = "Rise";
 
-    .value {
-      font-size: 28px;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
+  } else if (last < digits[digits.length - 2]) {
 
-    .percentage {
-      color: #22c55e;
-      font-size: 16px;
-    }
+    document.getElementById("direction").innerText = "Fall";
 
-    .section-title {
-      margin: 30px 0 15px;
-      font-size: 24px;
-    }
+  } else {
 
-    .frequency-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
-    }
+    document.getElementById("direction").innerText = "Match";
+  }
 
-    .frequency-item {
-      background: #1e293b;
-      padding: 15px;
-      border-radius: 10px;
-      text-align: center;
-      border: 1px solid #334155;
-    }
+  document.getElementById("results").style.display = "block";
+}
 
-    .digit {
-      font-size: 22px;
-      font
+</script>
+
+</body>
+</html>
