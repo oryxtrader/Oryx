@@ -834,11 +834,12 @@ createFrequencyGrid();
   const button = document.getElementById("derivConnect");
   const status = document.getElementById("derivStatus");
 
-  function getLastDigit(price) {
-    return Number(Number(price).toFixed(2).slice(-1));
-  }
+  function getLastDigit(price, pipSize) {
+  const formattedPrice = Number(price).toFixed(Number(pipSize));
+  return Number(formattedPrice.slice(-1));
+}
 
-  function connectDeriv() {
+
 
     if (socket) {
       socket.close();
