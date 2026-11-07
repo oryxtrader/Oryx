@@ -959,7 +959,184 @@ createFrequencyGrid();
   });
 
 })();
+// ==========================================
+// ORYX STAGE 2 - PROBABILITY ENGINE
+// ==========================================
 
+(function initOryxProbabilityEngine() {
+
+  const input = document.getElementById("digitInput");
+  const panel = document.querySelector(".input-panel");
+
+  if (!input || !panel) return;
+
+  if (document.getElementById("probabilityEngine")) return;
+
+  const section = document.createElement("div");
+
+  section.id = "probabilityEngine";
+
+  section.style.cssText = `
+    margin:25px 0;
+    padding:20px;
+    background:#10182d;
+    border:1px solid #29364d;
+    border-radius:16px;
+    color:#f8fafc;
+  `;
+
+  section.innerHTML = `
+    <h2 style="margin-bottom:18px;">
+      📊 Probability & Pattern Engine
+    </h2>
+
+    <div id="probabilitySample"
+      style="color:#94a3b8;margin-bottom:15px;">
+      Waiting for live data...
+    </div>
+
+    <div id="probabilityResults"></div>
+
+    <div id="probabilityStrength"
+      style="margin-top:18px;padding:15px;
+      background:#080d1b;border-radius:10px;">
+      OBSERVED PATTERN STRENGTH: WAITING
+    </div>
+
+    <p style="margin-top:15px;color:#94a3b8;
+      font-size:12px;">
+      Historical frequencies are descriptive statistics,
+      not guaranteed predictions of future ticks.
+    </p>
+  `;
+
+  panel.insertAdjacentElement("afterend", section);
+
+  function percentage(value, total) {
+    return total ? (value / total * 100).toFixed(1) : "0.0";
+  }
+
+  function analyseProbability() {
+
+    const digits = input.value
+      .match(/\d/g);
+
+    const values = digits
+      ? digits.map(Number)
+      : [];
+
+    const total = values.length;
+
+    if (!total) return;
+
+    const frequency = Array(10).fill(0);
+
+    let odd = 0;
+    let even = 0;
+    let over = 0;
+    let under = 0;
+    let rises = 0;
+    let falls = 0;
+    let matches = 0;
+
+    values.forEach(digit => {
+
+      frequency[digit]++;
+
+      if (digit % 2 === 0) even++;
+      else odd++;
+
+      if (digit >= 5) over++;
+      else under++;
+
+    });
+
+    for (let i = 1; i < total; i++) {
+
+      if (values[i] > values[i - 1]) rises++;
+      else if (values[i] < values[i - 1]) falls++;
+      else matches++;
+
+    }
+
+    const movementTotal = rises + falls + matches;
+
+    const parityDominance =
+      Math.max(odd, even) / total * 100;
+
+    const overUnderDominance =
+      Math.max(over, under) / total * 100;
+
+    const directionDominance = movementTotal
+      ? Math.max(rises, falls) / movementTotal * 100
+      : 0;
+
+    const strongest = Math.max(
+      parityDominance,
+      overUnderDominance,
+      directionDominance
+    );
+
+    let strength = "BALANCED";
+
+    if (strongest >= 65) strength = "STRONG OBSERVED SKEW";
+    else if (strongest >= 55) strength = "MODERATE OBSERVED SKEW";
+
+    document.getElementById("probabilitySample")
+      .textContent = total + " LIVE DATA POINTS";
+
+    let html = `
+      <h3>Digit Probability Distribution</h3>
+      <div style="display:grid;
+        grid-template-columns:repeat(2,1fr);
+        gap:9px;margin:12px 0 22px;">
+    `;
+
+    frequency.forEach((count, digit) => {
+
+      html += `
+        <div style="padding:12px;
+          background:#080d1b;border-radius:9px;">
+          <strong style="font-size:20px;">
+            ${digit}
+          </strong>
+          <div style="color:#4ade80;">
+            ${percentage(count,total)}%
+          </div>
+          <small style="color:#94a3b8;">
+            ${count} occurrences
+          </small>
+        </div>
+      `;
+
+    });
+
+    html += `</div>
+      <h3>Outcome Distribution</h3>
+      <div style="line-height:2.1;margin-top:10px;">
+        ODD: ${percentage(odd,total)}%<br>
+        EVEN: ${percentage(even,total)}%<br>
+        OVER (5–9): ${percentage(over,total)}%<br>
+        UNDER (0–4): ${percentage(under,total)}%<br>
+        RISE: ${percentage(rises,movementTotal)}%<br>
+        FALL: ${percentage(falls,movementTotal)}%<br>
+        MATCHES: ${percentage(matches,movementTotal)}%
+      </div>
+    `;
+
+    document.getElementById("probabilityResults")
+      .innerHTML = html;
+
+    document.getElementById("probabilityStrength")
+      .textContent =
+      "OBSERVED PATTERN STRENGTH: " + strength +
+      " (" + strongest.toFixed(1) + "% dominance)";
+
+  }
+
+  setInterval(analyseProbability, 1000);
+
+})();
 </script>
 
 </body>
