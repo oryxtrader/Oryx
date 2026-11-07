@@ -912,7 +912,7 @@ liveDigits = data.history.prices
 
       if (data.msg_type === "tick") {
 
-        const digit = getLastDigit(data.tick.quote);
+        const digit = getLastDigit(data.tick.quote, data.tick.pip_size);
 
         liveDigits.push(digit);
 
