@@ -702,16 +702,30 @@ function runAnalysis() {
   document.getElementById("streak").textContent =
     `${last} × ${streak}`;
 
-  let signal = "MIXED";
 
-  if (oddCount > evenCount) {
-    signal = "ODD";
-  } else if (evenCount > oddCount) {
-    signal = "EVEN";
-  }
+const oddEvenBias =
+  oddCount > evenCount ? "ODD" :
+  evenCount > oddCount ? "EVEN" :
+  "BALANCED";
 
-  document.getElementById("currentSignal").textContent =
-    signal;
+const overUnderBias =
+  overCount > underCount ? "OVER" :
+  underCount > overCount ? "UNDER" :
+  "BALANCED";
+
+const movementBias =
+  direction.includes("RISE") ? "RISE" :
+  direction.includes("FALL") ? "FALL" :
+  "NEUTRAL";
+
+const signal =
+  oddEvenBias + " | " +
+  overUnderBias + " | " +
+  movementBias;
+
+document.getElementById("currentSignal").textContent =
+  signal;
+
 
   const hotText = hot.join(", ");
   const coldText = cold.join(", ");
