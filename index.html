@@ -888,10 +888,11 @@ createFrequencyGrid();
       }
 
       if (data.msg_type === "history") {
-
-        liveDigits = data.history.prices
-          .map(getLastDigit)
-          .slice(-count);
+liveDigits = data.history.prices
+  .map(price => getLastDigit(price, data.pip_size))
+  .slice(-count);
+        
+          
 
         input.value = liveDigits.join(", ");
 
