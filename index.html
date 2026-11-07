@@ -769,6 +769,197 @@ function clearHistory() {
 
 createFrequencyGrid();
 
+// =====================================
+// ORYX - LIVE DERIV MARKET CONNECTION
+// =====================================
+
+(function initOryxDerivLive() {
+
+  const symbols = {
+    "Volatility 10": "R_10",
+    "Volatility 25": "R_25",
+    "Volatility 50": "R_50",
+    "Volatility 75": "R_75",
+    "Volatility 100": "R_100"
+  };
+
+  const input = document.getElementById("digitInput");
+  const marketSelect = document.getElementById("market");
+  const pointsSelect = document.getElementById("dataPoints");
+
+  let socket = null;
+  let liveDigits = [];
+
+  const originalAddHistory = addHistory;
+
+  addHistory = function(item) {
+    if (!window.oryxLiveUpdating) {
+      originalAddHistory(item);
+    }
+  };
+
+  const panel = document.querySelector(".input-panel");
+
+  panel.insertAdjacentHTML("afterbegin", `
+    <div style="margin-bottom:18px;padding:12px;
+      background:#080d1b;border-radius:10px;">
+      <button id="derivConnect"
+        style="width:100%;padding:14px;
+        background:#16a34a;color:white;
+        border:0;border-radius:8px;
+        font-weight:bold;font-size:16px;">
+        CONNECT LIVE DERIV DATA
+      </button>
+      <div id="derivStatus"
+        style="margin-top:12px;color:#fbbf24;">
+        ● NOT CONNECTED
+      </div>
+    </div>
+  `);
+
+  const button = document.getElementById("derivConnect");
+  const status = document.getElementById("derivStatus");
+
+  function getLastDigit(price) {
+    return Number(Number(price).toFixed(2).slice(-1));
+  }
+
+  function connectDeriv() {
+
+    if (socket) {
+      socket.close();
+    }
+
+    liveDigits = [];
+
+    const market = marketSelect.value;
+    const symbol = symbols[market];
+
+    const count = Number(pointsSelect.value);
+
+    if (!symbol) {
+      status.textContent = "MARKET NOT SUPPORTED";
+      return;
+    }
+
+    status.textContent = "CONNECTING TO DERIV...";
+
+    socket = new WebSocket(
+      "wss://api.derivws.com/trading/v1/options/ws/public"
+    );
+
+    socket.onopen = function() {
+
+      status.textContent = "CONNECTED - LOADING DATA...";
+
+      socket.send(JSON.stringify({
+        ticks_history: symbol,
+        count: count,
+        end: "latest",
+        style: "ticks",
+        req_id: 1
+      }));
+
+    };
+
+    socket.onmessage = function(event) {
+
+      const data = JSON.parse(event.data);
+
+      if (data.error) {
+        status.textContent =
+          "API ERROR: " + data.error.message;
+        return;
+      }
+
+      if (data.msg_type === "history") {
+
+        liveDigits = data.history.prices
+          .map(getLastDigit)
+          .slice(-count);
+
+        input.value = liveDigits.join(", ");
+
+        runAnalysis();
+
+        socket.send(JSON.stringify({
+          ticks: symbol,
+          subscribe: 1,
+          req_id: 2
+        }));
+
+        status.textContent =
+          "LIVE DATA ACTIVE - " + liveDigits.length +
+          " TICKS LOADED";
+
+      }
+
+      if (data.msg_type === "tick") {
+
+        const digit = getLastDigit(data.tick.quote);
+
+        liveDigits.push(digit);
+
+        if (liveDigits.length > count) {
+          liveDigits.shift();
+        }
+
+        input.value = liveDigits.join(", ");
+
+        window.oryxLiveUpdating = true;
+        runAnalysis();
+        window.oryxLiveUpdating = false;
+
+        status.textContent =
+          "LIVE ● " + liveDigits.length +
+          " TICKS - " + market;
+      }
+
+    };
+
+    socket.onerror = function() {
+      status.textContent = "CONNECTION ERROR";
+    };
+
+    socket.onclose = function() {
+      status.textContent = "DISCONNECTED";
+      button.textContent = "CONNECT LIVE DERIV DATA";
+    };
+
+    button.textContent = "DISCONNECT LIVE DATA";
+  }
+
+  button.addEventListener("click", function() {
+
+    if (socket &&
+        socket.readyState <= WebSocket.OPEN) {
+
+      socket.close();
+      socket = null;
+      button.textContent = "CONNECT LIVE DERIV DATA";
+
+    } else {
+      connectDeriv();
+    }
+
+  });
+
+  marketSelect.addEventListener("change", function() {
+
+    if (socket) {
+      socket.close();
+      socket = null;
+    }
+
+    status.textContent =
+      "MARKET CHANGED - RECONNECT REQUIRED";
+
+    button.textContent = "CONNECT LIVE DERIV DATA";
+
+  });
+
+})();
+
 </script>
 
 </body>
