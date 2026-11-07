@@ -717,11 +717,27 @@ const movementBias =
   direction.includes("RISE") ? "RISE" :
   direction.includes("FALL") ? "FALL" :
   "NEUTRAL";
+const oddEvenStrength =
+  total > 0 ? Math.abs(oddCount - evenCount) / total * 100 : 0;
 
+const overUnderStrength =
+  total > 0 ? Math.abs(overCount - underCount) / total * 100 : 0;
+
+const movementStrength =
+  total > 1 ? Math.abs(rises - falls) / (total - 1) * 100 : 0;
+
+const signalStrength =
+  (oddEvenStrength + overUnderStrength + movementStrength) / 3;
+
+const strengthLabel =
+  signalStrength >= 25 ? "STRONG" :
+  signalStrength >= 10 ? "MODERATE" :"WEAK";
 const signal =
   oddEvenBias + " | " +
   overUnderBias + " | " +
-  movementBias;
+  movementBias + " | " +
+  strengthLabel + " (" +
+  signalStrength.toFixed(1) + "%)";  
 
 document.getElementById("currentSignal").textContent = signal;
 
