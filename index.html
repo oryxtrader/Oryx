@@ -801,7 +801,7 @@ createFrequencyGrid();
   const marketSelect = document.getElementById("market");
   const pointsSelect = document.getElementById("dataPoints");
 
-  let socket = null;
+  let socket = null;function connectDeriv() {
   let liveDigits = [];
 
   const originalAddHistory = addHistory;
