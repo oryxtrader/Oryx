@@ -760,8 +760,8 @@ const signal =
 
 document.getElementById("currentSignal").textContent = signal;
 
-  const hotText = hot.join(", ");
-  const coldText = cold.join(", ");
+const hotText = hot.length ? hot.join(", ") : "None — equal frequency";
+const coldText = cold.length ? cold.join(", ") : "None — equal frequency";
 
   document.getElementById("summaryContent").innerHTML = `
     <div class="summary-item">
