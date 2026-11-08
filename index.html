@@ -613,13 +613,21 @@ function runAnalysis() {
   const maxCount = Math.max(...counts);
   const minCount = Math.min(...counts);
 
-  const hot = counts
-    .map((count, digit) => count === maxCount ? digit : null)
-    .filter(digit => digit !== null);
+const hot = maxCount > minCount
+  ? counts
+      .map((count, digit) => count === maxCount ? digit : null)
+      .filter(digit => digit !== null)
+  : [];
 
-  const cold = counts
-    .map((count, digit) => count === minCount ? digit : null)
-    .filter(digit => digit !== null);
+const cold = maxCount > minCount
+  ? counts
+      .map((count, digit) => count === minCount ? digit : null)
+      .filter(digit => digit !== null)
+  : [];
+  
+  
+
+
 
   document.getElementById("hotDigits").textContent =
     hot.join(", ");
