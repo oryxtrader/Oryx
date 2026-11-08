@@ -575,7 +575,18 @@ function parseDigits() {
 }
 
 function runAnalysis() {
+  const selectedType = document.getElementById("analysisType").value;
 
+  document.querySelectorAll(".analysis-card").forEach(card => {
+    const heading = card.querySelector("h3");
+    if (!heading) return;
+
+    card.style.display =
+      selectedType === "All Analysis" ||
+      heading.textContent.includes(selectedType)
+        ? ""
+        : "none";
+  });
   const digits = parseDigits();
   const market = document.getElementById("market").value;
 
