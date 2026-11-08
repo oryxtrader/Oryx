@@ -1076,7 +1076,14 @@ liveDigits = data.history.prices
 
     const total = values.length;
 
-    if (!total) return;
+    if (total < 2) {
+  document.getElementById("probabilitySample").textContent =
+    "Insufficient data — enter at least 2 digits.";
+  document.getElementById("probabilityResults").innerHTML = "";
+  document.getElementById("probabilityStrength").textContent =
+    "OBSERVED PATTERN STRENGTH: WAITING";
+  return;
+}
 
     const frequency = Array(10).fill(0);
 
