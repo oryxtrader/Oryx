@@ -641,10 +641,10 @@ const cold = maxCount > minCount
 
 
   document.getElementById("hotDigits").textContent =
-    hot.join(", ");
+  hot.length ? hot.join(", ") : "None — equal frequency";
 
   document.getElementById("coldDigits").textContent =
-    cold.join(", ");
+cold.length ? cold.join(", ") : "None — equal frequency";
 
   const oddCount = digits.filter(d => d % 2 !== 0).length;
   const evenCount = total - oddCount;
