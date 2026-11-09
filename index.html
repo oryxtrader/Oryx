@@ -704,7 +704,7 @@ cold.length ? cold.join(", ") : "None — equal frequency";
     direction;
 
   document.getElementById("riseFallText").innerHTML =
-    `<span class="badge">${direction}</span>`;
+  `<span class="badge">DIGIT ${direction}</span><p>Direction compares consecutive last digits.</p>`;
 
   document.getElementById("matchesText").innerHTML =
 `<span class="badge">${matches} REPEATS</span><p>Counts identical consecutive last digits.</p>`;
