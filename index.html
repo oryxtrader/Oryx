@@ -707,8 +707,7 @@ cold.length ? cold.join(", ") : "None — equal frequency";
     `<span class="badge">${direction}</span>`;
 
   document.getElementById("matchesText").innerHTML =
-    `<span class="badge">${matches} MATCHES</span>`;
-
+`<span class="badge">${matches} REPEATS</span><p>Counts identical consecutive last digits.</p>`;
   const last = digits[digits.length - 1];
   const previous = digits[digits.length - 2];
 
