@@ -604,7 +604,22 @@ function runAnalysis() {
 
     document.getElementById("currentSignal").textContent =
       "ENTER 2+ DIGITS";
+    ["direction", "streak", "hotDigits", "coldDigits"].forEach(id => {
+      document.getElementById(id).textContent = "—";
+    });
 
+    ["matchesText", "overUnderText", "riseFallText", "oddEvenText"].forEach(id => {
+      document.getElementById(id).textContent = "Waiting for data";
+    });
+
+    document.getElementById("sampleSize").textContent = "0 points";
+
+    for (let i = 0; i <= 9; i++) {
+      document.getElementById(`freq${i}`).textContent = "0 (0.0%)";
+    }
+
+    document.getElementById("summaryContent").innerHTML =
+      '<div class="summary-item">Enter at least 2 digits and run analysis.</div>';
     return;
   }
 
