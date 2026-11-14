@@ -1288,8 +1288,9 @@ const movementTotal = total - 1;
         EVEN: ${percentage(even,total)}%<br>
         OVER (5–9): ${percentage(over,total)}%<br>
         UNDER (0–4): ${percentage(under,total)}%<br>
-        RISE: ${percentage(rises,movementTotal)}%<br>
-        FALL: ${percentage(falls,movementTotal)}%<br>
+        ${useLivePrices ? "PRICE RISE" : "DIGIT RISE"}: ${percentage(rises,movementTotal)}%<br>
+${useLivePrices ? "PRICE FALL" : "DIGIT FALL"}: ${percentage(falls,movementTotal)}%<br>
+      
         MATCHES: ${percentage(matches,movementTotal)}%
       </div>
     `;
