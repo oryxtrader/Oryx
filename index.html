@@ -928,7 +928,7 @@ function updatePriceDirection() {
       : movement.falls > movement.rises
       ? "FALL ↓"
       : "NEUTRAL";
-
+document.getElementById("direction").textContent = priceDirection;
   document.getElementById("riseFallText").innerHTML =
     `<span class="badge">PRICE ${priceDirection}</span>`;
 }
