@@ -931,7 +931,8 @@ function updatePriceDirection() {
 document.getElementById("direction").textContent = priceDirection;
   document.getElementById("riseFallText").innerHTML =
     `<span class="badge">PRICE ${priceDirection}</span>`;
-}
+document.getElementById("summaryDirection").textContent =
+  "✓ Price direction: " + priceDirection + ".";}
 
 
   function connectDeriv() {  if (socket) {
