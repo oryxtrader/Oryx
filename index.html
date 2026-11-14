@@ -919,6 +919,21 @@ function calculatePriceMovement() {
     };
 }
 
+function updatePriceDirection() {
+  const movement = calculatePriceMovement();
+
+  const priceDirection =
+    movement.rises > movement.falls
+      ? "RISE ↑"
+      : movement.falls > movement.rises
+      ? "FALL ↓"
+      : "NEUTRAL";
+
+  document.getElementById("riseFallText").innerHTML =
+    `<span class="badge">PRICE ${priceDirection}</span>`;
+}
+
+
   function connectDeriv() {  if (socket) {
       socket.close();
     }
@@ -979,7 +994,7 @@ livePrices = data.history.prices.map(Number).slice(-count);
         input.value = liveDigits.join(", ");
 
         runAnalysis();
-
+updatePriceDirection();
         socket.send(JSON.stringify({
           ticks: symbol,
           subscribe: 1,
@@ -1015,7 +1030,7 @@ if (livePrices.length > count) {
         window.oryxLiveUpdating = true;
         runAnalysis();
         window.oryxLiveUpdating = false;
-
+updatePriceDirection();
         status.textContent =
           "LIVE ● " + liveDigits.length +
           " TICKS - " + market;
