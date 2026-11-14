@@ -874,7 +874,10 @@ createFrequencyGrid();
   let liveDigits = [];
 
 let livePrices = [];
-
+window.oryxGetLiveData = () => ({
+  digits: liveDigits.slice(),
+  prices: livePrices.slice()
+});
   const originalAddHistory = addHistory;
 
   addHistory = function(item) {
