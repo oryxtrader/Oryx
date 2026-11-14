@@ -1197,15 +1197,40 @@ updatePriceDirection();
 
     });
 
-    for (let i = 1; i < total; i++) {
+    
+const liveData = window.oryxGetLiveData?.();
 
-      if (values[i] > values[i - 1]) rises++;
-      else if (values[i] < values[i - 1]) falls++;
-      else matches++;
+const useLivePrices =
+  liveData &&
+  liveData.prices.length === total &&
+  liveData.digits.length === total &&
+  liveData.digits.every((d, i) => d === values[i]);
 
-    }
+const movementData = useLivePrices
+  ? liveData.prices
+  : values;
 
-    const movementTotal = rises + falls + matches;
+for (let i = 1; i < total; i++) {
+  if (movementData[i] > movementData[i - 1]) {
+    rises++;
+  } else if (movementData[i] < movementData[i - 1]) {
+    falls++;
+  }
+
+  if (values[i] === values[i - 1]) {
+    matches++;
+  }
+}
+
+const movementTotal = total - 1;
+
+
+    
+
+
+    
+
+
 
     const parityDominance =
       Math.max(odd, even) / total * 100;
