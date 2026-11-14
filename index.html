@@ -582,7 +582,7 @@ function parseDigits() {
     .filter(n => n >= 0 && n <= 9);
 }
 
-function runAnalysis() {
+function runAnalysis(prices = null) {
   const selectedType = document.getElementById("analysisType").value;
 
   document.querySelectorAll(".analysis-card").forEach(card => {
