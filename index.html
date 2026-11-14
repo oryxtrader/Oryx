@@ -859,6 +859,8 @@ createFrequencyGrid();
   let socket = null;
   let liveDigits = [];
 
+let livePrices = [];
+
   const originalAddHistory = addHistory;
 
   addHistory = function(item) {
@@ -901,6 +903,8 @@ createFrequencyGrid();
     }
 
     liveDigits = [];
+
+livePrices = [];
 
     const market = marketSelect.value;
     const symbol = symbols[market];
@@ -946,7 +950,9 @@ createFrequencyGrid();
 liveDigits = data.history.prices
   .map(price => getLastDigit(price, data.pip_size))
   .slice(-count);
-        
+  
+livePrices = data.history.prices.map(Number).slice(-count);
+      
           
 
         input.value = liveDigits.join(", ");
