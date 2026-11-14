@@ -1008,7 +1008,7 @@ livePrices = data.history.prices.map(Number).slice(-count);
 
         input.value = liveDigits.join(", ");
 
-        runAnalysis();
+        runAnalysis(livePrices);
 updatePriceDirection();
         socket.send(JSON.stringify({
           ticks: symbol,
@@ -1043,7 +1043,7 @@ if (livePrices.length > count) {
         input.value = liveDigits.join(", ");
 
         window.oryxLiveUpdating = true;
-        runAnalysis();
+        runAnalysis(livePrices);
         window.oryxLiveUpdating = false;
 updatePriceDirection();
         status.textContent =
