@@ -896,7 +896,28 @@ let livePrices = [];
   return Number(formattedPrice.slice(-1));
 }
 
+function calculatePriceMovement() {
+    let priceRises = 0;
+    let priceFalls = 0;
+    let priceEquals = 0;
 
+    for (let i = 1; i < livePrices.length; i++) {
+        if (livePrices[i] > livePrices[i - 1]) {
+            priceRises++;
+        } else if (livePrices[i] < livePrices[i - 1]) {
+            priceFalls++;
+        } else {
+            priceEquals++;
+        }
+    }
+
+    return {
+        rises: priceRises,
+        falls: priceFalls,
+        equals: priceEquals,
+        total: priceRises + priceFalls + priceEquals
+    };
+}
 
   function connectDeriv() {  if (socket) {
       socket.close();
