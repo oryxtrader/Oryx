@@ -699,18 +699,32 @@ cold.length ? cold.join(", ") : "None — equal frequency";
     `<span class="badge">${overUnderResult}</span>`;
 
   let rises = 0;
-  let falls = 0;
-  let matches = 0;
+let falls = 0;
+let matches = 0;
 
-  for (let i = 1; i < digits.length; i++) {
-    if (digits[i] > digits[i - 1]) {
-      rises++;
-    } else if (digits[i] < digits[i - 1]) {
-      falls++;
-    } else {
-      matches++;
-    }
+const usePrices =
+  Array.isArray(prices) &&
+  prices.length === digits.length;
+
+const movementData = usePrices ? prices : digits;
+
+for (let i = 1; i < digits.length; i++) {
+  if (movementData[i] > movementData[i - 1]) {
+    rises++;
+  } else if (movementData[i] < movementData[i - 1]) {
+    falls++;
   }
+
+  if (digits[i] === digits[i - 1]) {
+    matches++;
+  }
+}
+  
+  
+
+  
+
+    
 
   const direction =
     rises > falls
