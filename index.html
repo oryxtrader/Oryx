@@ -977,6 +977,14 @@ livePrices = data.history.prices.map(Number).slice(-count);
 
         liveDigits.push(digit);
 
+livePrices.push(Number(data.tick.quote));
+
+if (livePrices.length > count) {
+    livePrices.shift();
+}
+
+
+
         if (liveDigits.length > count) {
           liveDigits.shift();
         }
