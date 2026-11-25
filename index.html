@@ -790,7 +790,7 @@ const strengthLabel =
 const signal =
   oddEvenBias + " | " +
   overUnderBias + " | " +
-movementBias + " | AVERAGE OBSERVED IMBALANCE: " +
+(usePrices ? "PRICE " : "DIGIT ") + movementBias + " | AVERAGE OBSERVED IMBALANCE: " +
   strengthLabel + " (" +
   signalStrength.toFixed(1) + "%)";  
 
